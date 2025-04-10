@@ -1,0 +1,200 @@
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0!important;
+    background-color: rgba(255, 234, 0, 0.342);
+    background-size: 100%;
+    height: 100vh;
+}
+.error-message {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+input.error, select.error, textarea.error {
+    border: 1px solid red !important;
+}
+header {
+    flex: 1;
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    text-align: left;
+    width:100%;
+    padding: 10px; 
+    color: yellow;  
+    background-color: rgba(0, 119, 174, 0.81);
+}
+@media screen and (min-width: 1200px) {
+    header {
+      flex-direction: row;
+    }
+}
+html{
+    min-width: 1100px;
+}
+header .title_block{
+    flex: 2;
+    order: 1;
+    display: flex;
+    flex-direction: row;
+}
+header h1{
+    opacity: 100%;
+    font-size: 35pt;
+}
+
+header nav{
+    justify-content: flex-end;
+    display: flex;
+    flex-direction: column;
+    flex: 4;
+    order: 2;
+    opacity: 100%;
+    margin: 10px;
+    font-size: 30pt;
+}
+@media screen and (min-width: 1200px) {
+    header nav{
+      flex-direction: row;
+      align-items: flex-start;
+      flex: 3;
+    }
+}
+.a-1{
+    order:1;
+}
+.a-2{
+    order:2;
+}
+.a-3{
+    order:3;
+}
+
+header nav a{
+    color: yellow;
+    margin: 10px;
+}
+
+header nav a:hover{
+    color : black;
+    transition: 1s;
+}
+
+
+div.code {
+    text-align: center;
+    font-size: 100pt;
+    font-family: "Courier New", monotype;
+    font-weight: bold;
+    font-style: italic;
+    line-height: 120%;
+}
+
+.img-header{
+    margin:10px; 
+    width:100px; 
+    height:100px;
+}
+
+
+.main_block{
+    display: flex;
+    flex-direction: column;
+    flex: 52;
+    order: 2;
+    background-color: rgba(1, 200, 214, 0.5);
+    margin: auto;
+    width: 960px;
+}
+.main_block .marks{
+    list-style-position: inside;      
+    margin: 0px;
+}
+.main_block ul{
+    order: 3;
+}
+@media screen and (min-width: 1200px) {
+    .main_block ul{
+      order: 1;
+    }
+}
+.main_block h1{
+    order: 1;
+}
+@media screen and (min-width: 1200px) {
+    .main_block h1{
+      order: 2;
+    }
+}
+.main_block table{
+    order: 2;
+}
+@media screen and (min-width: 1200px) {
+    .main_block table{
+      order: 3;
+    }
+}
+.main_block form{
+    order: 4;
+}
+.main_block .marks li{
+    color: rgb(65, 0, 85);
+    font-weight: bolder;
+    font-size: 30pt; 
+}
+
+.main_block .marks a{
+    color: yellow;
+}
+
+.main_block .marks a:hover{
+    color: black;
+    transition: 1s;
+}
+.main_block form{
+    text-align: center;
+}
+.main_block h1{
+    text-align: center;
+}
+table{
+    text-align: center;
+    width: 400px; /* Ширина таблицы */
+    border: 1px solid green; /* Рамка вокруг таблицы */
+    margin: auto; /* Выравниваем таблицу по центру окна  */
+}
+table td{
+    text-align: center;
+}
+table{
+    font-size: 40pt;
+}
+
+table #white{
+    background-color: white;
+}
+table #blue{
+    background-color: blue;
+}
+table #red{
+    background-color: red;
+}
+
+#inside{
+    font-size: 35pt;
+}
+
+#tablo{
+    font-size: 25pt;
+    color:rgb(76, 0, 83)
+}
+
+footer{
+    order: 3;
+    flex: 1;
+    background-color: rgb(0, 255, 213, 0.5);
+    padding: 5px;
+}
