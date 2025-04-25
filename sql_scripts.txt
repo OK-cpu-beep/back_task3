@@ -18,7 +18,7 @@ CREATE TABLE users_languages (
     language_id INT NOT NULL,
     PRIMARY KEY (user_id, language_id),
     FOREIGN KEY (user_id) REFERENCES users(users_id) ON DELETE CASCADE,
-    FOREIGN KEY (language_id) REFERENCES languages(languages_id) ON DELETE CASCADE
+    FOREIGN KEY (language_id) REFERENCES language(id) ON DELETE CASCADE
 );
 
 INSERT INTO language(name) VALUES ('Pascal');
