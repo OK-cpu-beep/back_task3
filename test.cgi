@@ -1,64 +1,67 @@
 #!/usr/bin/python3
+# coding: utf-8
 
-import os
-import sys
-import re
-import logging
-from datetime import datetime
-from urllib.parse import parse_qs
-
-# По какой-то причине test.cgi не хочет импортировать database.propert
-# поэтому я просто запихнул класс сюда
-
-class SQL_con():
-    config = {
-        'host': 'localhost',       # Адрес сервера БД
-        'user': 'u68835',          # Имя пользователя
-        'password': '2995354',     # Пароль
-        'database': 'u68835',      # Название БД
-        'ssl_disabled': True
-    }
-    @staticmethod
-    def post_user(data):
-
-        conn = sq_con.connect(**SQL_con.config)
-        curr = conn.cursor()
-        curr.execute(f'''
-            INSERT INTO users (fio, phone, email, birth_date, gender, bio)
-            VALUES ('{data["fio"]}','{data["phone"]}','{data["email"]}',
-            '{data["birth_date"]}' , {data["gender"]}, '{data["bio"]}');
-            ''')
-        conn.commit()
-        conn.close()
-
-    @staticmethod    
-    def get_user_id(data):
-        conn = sq_con.connect(**SQL_con.config)
-        curr = conn.cursor()
-        curr.execute(f'''
-            SELECT * FROM users WHERE (fio='{data["fio"]}' AND phone = '{data["phone"]}'
-            AND email = '{data["email"]}' AND birth_date = '{data["birth_date"]}'
-            AND gender = {data["gender"]} AND bio = '{data["bio"]}');
-            ''')
-        user = curr.fetchall()
-        conn.close()
-        if(len(user)!=0):
-            return user[0][0]
-        return -1
-    @staticmethod
-    def post_language(user_id, data):
-        conn = sq_con.connect(**SQL_con.config)
-        curr = conn.cursor()
-        for i in data:
-            curr.execute(f'''
-                INSERT INTO users_languages VALUES ({user_id}, {i});
-                ''')
-        conn.commit()
-        conn.close()
-#os.environ получает инфу о переменных окружениях
-method = os.environ.get('REQUEST_METHOD', '')
-sys.stdout.reconfigure(encoding='utf-8')
 try:
+    import os
+    import sys
+    import re
+    import logging
+    from datetime import datetime
+    from urllib.parse import parse_qs
+    import mysql.connector as sq_con
+
+    # По какой-то причине test.cgi не хочет импортировать database.py
+    # поэтому я просто запихнул класс сюда
+
+    class SQL_con():
+        config = {
+            'host': 'localhost',       # Адрес сервера БД
+            'user': 'u68835',          # Имя пользователя
+            'password': '2295354',     # Пароль
+            'database': 'u68835',      # Название БД
+            'ssl_disabled': True
+        }
+        @staticmethod
+        def post_user(data):
+
+            conn = sq_con.connect(**SQL_con.config)
+            curr = conn.cursor()
+            curr.execute(f'''
+                INSERT INTO users (fio, phone, email, birth_date, gender, bio)
+                VALUES ('{data["fio"]}','{data["phone"]}','{data["email"]}',
+                '{data["birth_date"]}' , {data["gender"]}, '{data["bio"]}');
+                ''')
+            conn.commit()
+            conn.close()
+
+        @staticmethod    
+        def get_user_id(data):
+            conn = sq_con.connect(**SQL_con.config)
+            curr = conn.cursor()
+            curr.execute(f'''
+                SELECT * FROM users WHERE (fio='{data["fio"]}' AND phone = '{data["phone"]}'
+                AND email = '{data["email"]}' AND birth_date = '{data["birth_date"]}'
+                AND gender = {data["gender"]} AND bio = '{data["bio"]}');
+                ''')
+            user = curr.fetchall()
+            conn.close()
+            if(len(user)!=0):
+                return user[0][0]
+            return -1
+        @staticmethod
+        def post_language(user_id, data):
+            conn = sq_con.connect(**SQL_con.config)
+            curr = conn.cursor()
+            for i in data:
+                curr.execute(f'''
+                    INSERT INTO users_languages VALUES ({user_id}, {i});
+                    ''')
+            conn.commit()
+            conn.close()
+
+    #os.environ получает инфу о переменных окружениях
+    method = os.environ.get('REQUEST_METHOD', '')
+    sys.stdout.reconfigure(encoding='utf-8')
     if method=="POST":
         content_length = int(os.environ.get('CONTENT_LENGTH', 0))
         post_data = sys.stdin.read(content_length)
@@ -97,7 +100,6 @@ try:
 
         try:
             birth_date = datetime.strptime(new_data['field-birthday'][0], '%Y-%m-%d').date()
-            print(birth_date)
             if birth_date > datetime.now().date():
                 errors['birth_date'] = 'Дата рождения не может быть в будущем'
         except ValueError:
@@ -117,7 +119,9 @@ try:
 
 
         #Cогласие
-        if not new_data["check-1"]:
+        try:
+            new_data["check-1"]
+        except:
             errors['contract_agreed'] = "Ознакомьтесь с контрактом для отправки"
 
         #Пол
@@ -189,8 +193,7 @@ try:
                 phrase = "Вы уже отправляли форму"
 
             print("Status: 200 OK\r")
-            print("Content-Type: text/html\r\n\r\n")
-            
+            print("Content-Type: text/html; charset=UTF-8\r\n\r\n")            
             Success_html = f'''
     <head>
     <meta charset="UTF-8">
@@ -227,11 +230,10 @@ try:
         print("Content-Type: text/html\r\n\r\n")
         print("Wrong url (Change url to '/' pls)")
 except Exception as e:
-    error_msg = f"Critical error: {str(e)}"
-    file = open("logs.txt", "w")
-    file.write(error_msg)
-    file.close()
-    print("Status: 500 Internal Server Error\r")
-    print("Content-Type: text/html\r\n\r\n")
-    print("<h1>500 Server Error</h1>")
-    print("<p>Произошла ошибка. Администратор уведомлен.</p>")
+    print(f"""
+    <html>
+    <body>
+    <h1>Error {str(e)}</h1>
+    </body>
+    </html>
+        """)
